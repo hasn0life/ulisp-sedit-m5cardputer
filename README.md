@@ -2,12 +2,10 @@
 Port of [ulisp-lispbox](https://github.com/ErsatzMoco/ulisp-lispbox) text editor for the [M5 Cardputer](https://docs.m5stack.com/en/core/Cardputer). Orignal editor was written by https://github.com/ErsatzMoco
 
 ## How to install
-Add the lisplibrary.h and extensions.ino files to the folder which contains [ulisp-cardputer.ino](https://github.com/technoblogy/ulisp-cardputer). Then follow the setup instructions for [extensions](http://www.ulisp.com/show?19Q4) and [lisplibrary](http://www.ulisp.com/show?27OV) to enable both features. Note: You will also need to change the `lispstring` function in the ulisp-cardputer.ino file to take a `const char*`or you'll get a compiler error. Also you have to enable the `#define largerfont` option
+Add the lisplibrary.h and extensions.ino files to the folder which contains [ulisp-cardputer.ino](https://github.com/technoblogy/ulisp-cardputer). Then follow the setup instructions for [extensions](http://www.ulisp.com/show?19Q4) and [lisplibrary](http://www.ulisp.com/show?27OV) to enable both features. Also you have to enable the `#define largerfont` option
 
 ## Known issues
-- the `lispstring` function needs to be changed to take a `const char*`
 - [superprint issue](http://forum.ulisp.com/t/packages-and-persistent-storage/1318/16) breaks the editing of existing functions by introducing escape characters into the string being edited
-- `split-string-to-list` can take up all the RAM if the function is too long
 - only works with the larger font option
 
 ## Useage

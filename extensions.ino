@@ -119,6 +119,31 @@ object *fn_KeyboardFlush (object *args, object *env) {
   return nil;
 }
 
+object *fn_searchstr (object *args, object *env) {
+  (void) env;
+  
+  int startpos = 0;
+  object *pattern = first(args);
+  object *target = second(args);
+  args = cddr(args);
+  if (pattern == NULL) return number(0);
+  else if (target == NULL) return nil;
+  if (args != NULL) startpos = checkinteger(car(args));
+  
+if (stringp(pattern) && stringp(target)) {
+    int l = stringlength(target);
+    int m = stringlength(pattern);
+    if (startpos > l) error2(indexrange);
+    for (int i = startpos; i <= l-m; i++) {
+      int j = 0;
+      while (j < m && nthchar(target, i+j) == nthchar(pattern, j)) j++;
+      if (j == m) return number(i);
+    }
+    return nil;
+  } else error2("arguments are not both lists or strings");
+  return nil;
+}
+
 #if defined sdcardsupport
 /*
   (sd-file-exists filename)
@@ -189,7 +214,7 @@ object *fn_SDCardDir (object *args, object *env) {
   }
   else if (mode == 1) {
     dirstr = printDirectoryStr(root, numTabs, dirstr);
-    return lispstring(dirstr.c_str());
+    return lispstring((char*)dirstr.c_str());
   }
   else if (mode == 2) {
     dirlist = printDirectoryList(root, dirlist);
@@ -261,7 +286,7 @@ object* printDirectoryList(File dir, object* dirlist) {
       dirstr = dirstr + "/";
       dirlist = cons(printDirectoryList(entry, dirlist), dirlist);
     }
-    dirlist = cons(lispstring(dirstr.c_str()), dirlist);
+    dirlist = cons(lispstring((char*)dirstr.c_str()), dirlist);
     entry.close();
   }
   return dirlist;
@@ -274,6 +299,7 @@ object* printDirectoryList(File dir, object* dirlist) {
 //USB host keyboard supported anytime
 const char stringKeyboardGetKey[] PROGMEM = "keyboard-get-key";
 const char stringKeyboardFlush[] PROGMEM = "keyboard-flush";
+const char stringSearchStr[] PROGMEM = "search-str";
 
 #if defined sdcardsupport
 const char stringSDFileExists[] PROGMEM = "sd-file-exists";
@@ -288,6 +314,10 @@ const char docKeyboardGetKey[] PROGMEM = "(keyboard-get-key [pressed])\n"
 "Get key last recognized - default: when released, if [pressed] is t: when pressed).";
 const char docKeyboardFlush[] PROGMEM = "(keyboard-flush)\n"
 "Discard missing key up/down events.";
+const char docSearchStr[] PROGMEM = "(search pattern target [startpos])\n"
+"Returns the index of the first occurrence of pattern in target, or nil if it's not found\n"
+"starting from startpos";
+
 #if defined sdcardsupport
 const char docSDFileExists[] PROGMEM = "(sd-file-exists filename)\n"
 "Returns t if filename exists on SD card, otherwise nil.";
@@ -304,7 +334,7 @@ const tbl_entry_t lookup_table2[] PROGMEM = {
 
 { stringKeyboardGetKey, fn_KeyboardGetKey, 0201, docKeyboardGetKey },
 { stringKeyboardFlush, fn_KeyboardFlush, 0200, docKeyboardFlush },
-
+{ stringSearchStr, fn_searchstr, 0224, docSearchStr },
 #if defined sdcardsupport
   { stringSDFileExists, fn_SDFileExists, 0211, docSDFileExists },
   { stringSDFileRemove, fn_SDFileRemove, 0211, docSDFileRemove },
