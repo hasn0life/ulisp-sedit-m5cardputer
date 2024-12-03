@@ -96,6 +96,14 @@ object *fn_KeyboardGetKey (object *args, object *env) {
           else if(i == 'h') {
             return number(16);
           }
+          //toggle bracket matching
+          else if(i == '[') {
+            return number(194);
+          }
+          //chekck if matching bracket
+          else if(i == ']') {
+            return number(195);
+          }
         }
       }
 

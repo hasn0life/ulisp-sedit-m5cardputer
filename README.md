@@ -28,6 +28,10 @@ The commands from the orignal lispbox editor work with slight modifications
 
 - Fn-h --- help menu
 
+- Fn-\[ --- toggle bracket matching on/off
+
+- Fn-\] --- check if bracket under the cursor has a matching bracket in the buffer. If so, they are temporarily highlighted. (Use when continuous bracket matching is off.)
+
 - Fn-5 --- bind contents of the text buffer to a symbol of your choice and quit editor
 
 - Fn-9 --- delete a file on the SD card
@@ -36,4 +40,4 @@ The commands from the orignal lispbox editor work with slight modifications
 
 - Fn-1 --- load text from SD card into buffer, discarding the present one
 
-- Fn-2 --- show directory of SD card Note: file names for SD card follow the 8.3 standard and thus must be given in capital letters.
+- Fn-2 --- show directory of SD card 
